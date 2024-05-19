@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Monster-Escape/Assets/Character And Animation.meta
 guid: 3e0602292629198478c55ac5577a44bb
+========
+guid: 3b35ad8b923382247a321a16fee189c1
+>>>>>>>> Sarah:Monster-Escape/Assets/Creep Horror Creature/DemoSceneAssets.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
