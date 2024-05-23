@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scene Project/Main Menu.unity
     guid: f2c3cda4b9799f848a2077c595c6b23b
+  - enabled: 1
+    path: Assets/Scene Project/School.unity
+    guid: 55d59c86b3b00b840bb62bf8813dc1d3
   m_configObjects: {}
