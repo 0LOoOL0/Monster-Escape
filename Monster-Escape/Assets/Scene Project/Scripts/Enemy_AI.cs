@@ -42,15 +42,15 @@ public class Enemy_AI : MonoBehaviour
     {
         playerLives--;
         Debug.Log("Player lives reduced: " + playerLives); // Add this debug statement
-        //if (playerLives <= 0)
-        //{
-        //    GoToMainMenu();
-        //}
+        if (playerLives <= 0)
+        {
+            GoToMainMenu();
+        }
     }
 
-    //void GoToMainMenu()
-    //{
-    //    Debug.Log("Going to Main Menu"); // Add this debug statement
-    //    SceneManager.LoadScene("Main Menu");  // Make sure the MainMenu scene is added in the build settings
-    //}
+    void GoToMainMenu()
+    {
+        Debug.Log("Going to Main Menu"); // Add this debug statement
+        SceneManager.LoadScene("Main Menu");  // Make sure the MainMenu scene is added in the build settings
+    }
 }
