@@ -27,14 +27,9 @@ public class Timer : MonoBehaviour
         if (timerDuration <= 0)
         {
             lives -= 1;
-            if (lives > 0)
+            if (lives >= 0)
             {
                 ReloadScene();
-            }
-            else if(lives <= 0 )
-             {
-             GoToMainMenu();
-
             }
             else
             {
@@ -58,11 +53,5 @@ public class Timer : MonoBehaviour
     {
         // Reload the current scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    void GoToMainMenu()
-    {
-        Debug.Log("Going to Main Menu"); // Add this debug statement
-        SceneManager.LoadScene("Main Menu");  // Make sure the MainMenu scene is added in the build settings
     }
 }

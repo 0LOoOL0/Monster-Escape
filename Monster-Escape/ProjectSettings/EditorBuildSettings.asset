@@ -7,8 +7,14 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Scene Project/Main Menu.unity
-    guid: f2c3cda4b9799f848a2077c595c6b23b
+    guid: 2dd169edb3b9e50429b130bc42b62356
+  - enabled: 1
+    path: Assets/Scene Project/Hospital.unity
+    guid: d31d367ab64fcf9bba84b271b7cb2d9a
   - enabled: 1
     path: Assets/Scene Project/School.unity
     guid: 55d59c86b3b00b840bb62bf8813dc1d3
+  - enabled: 1
+    path: Assets/Scene Project/Home.unity
+    guid: c0d944ca9defd20449bc336e50d75a08
   m_configObjects: {}
