@@ -31,9 +31,9 @@ public class Timer : MonoBehaviour
             {
                 ReloadScene();
             }
-            else if (lives <= 0)
-            {
-                GoToMainMenu();
+            else if(lives <= 0 )
+             {
+             GoToMainMenu();
 
             }
             else
