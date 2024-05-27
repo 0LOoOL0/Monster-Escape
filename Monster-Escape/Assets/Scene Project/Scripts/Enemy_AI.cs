@@ -1,13 +1,16 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;  // Add this for scene management
 
 public class Enemy_AI : MonoBehaviour
 {
     private NavMeshAgent agent;
     public GameObject target;
     private AudioSource audioSource; // Private AudioSource
+    public int playerLives = 3;      // Add this to track player lives
 
     // Use this for initialization
     void Start()
@@ -35,4 +38,20 @@ public class Enemy_AI : MonoBehaviour
             Debug.LogError("Audio played");
         }
     }
+
+    public void ReduceLife()
+    {
+        playerLives--;
+        Debug.Log("Player lives reduced: " + playerLives); // Add this debug statement
+        //if (playerLives <= 0)
+        //{
+        //    GoToMainMenu();
+        //}
+    }
+
+    //void GoToMainMenu()
+    //{
+    //    Debug.Log("Going to Main Menu"); // Add this debug statement
+    //    SceneManager.LoadScene("Main Menu");  // Make sure the MainMenu scene is added in the build settings
+    //}
 }
