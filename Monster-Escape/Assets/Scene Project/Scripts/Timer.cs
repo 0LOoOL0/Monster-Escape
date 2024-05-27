@@ -31,15 +31,15 @@ public class Timer : MonoBehaviour
             {
                 ReloadScene();
             }
-            else if(lives <= 0 )
-             {
-             GoToMainMenu();
+            else if (lives <= 0)
+            {
+                GoToMainMenu();
 
             }
             else
             {
                 UpdateDisplay(0); // Update display to show 00:00 and lives as -1
-                return;
+                return;
             }
         }
 
