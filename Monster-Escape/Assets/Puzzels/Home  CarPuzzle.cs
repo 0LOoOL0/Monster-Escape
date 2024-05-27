@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -12,24 +11,11 @@ public class CarPuzzle : MonoBehaviour
     public TMP_Text statusText;
     public string correctAnswer = "YOU CAN'T RUN USING THIS CAR";
     private bool isInteracting = true;
+    public Button submitButton; // Declare the submit button
 
-    void Update()
+    void Start()
     {
-        Debug.Log("Update called");
-        if (isInteracting && Input.GetKeyDown(KeyCode.E))
-        {
-            if (!PuzzleCanvas.enabled) // Only attempt to solve the puzzle if the canvas is disabled
-            {
-                PuzzleCanvas.enabled = true;
-                EPromptCanvas.enabled = false;
-                Debug.Log("Attempting to solve car puzzle");
-                SolvePuzzle(inputField.text);
-            }
-            else // If the puzzle is enabled, assume the player wants to exit
-            {
-                ExitPuzzle();
-            }
-        }
+        submitButton.onClick.AddListener(OnSubmitButtonClicked); // Hook up the button click event
     }
 
     private void OnTriggerEnter(Collider other)
@@ -56,8 +42,20 @@ public class CarPuzzle : MonoBehaviour
         }
     }
 
+    public void OnSubmitButtonClicked() // Method to handle button click
+    {
+        if (isInteracting && !PuzzleCanvas.enabled) // Ensure we're not trying to solve the puzzle if it's already active
+        {
+            PuzzleCanvas.enabled = true;
+            EPromptCanvas.enabled = false;
+            Debug.Log("Attempting to solve car puzzle");
+            SolvePuzzle(inputField.text);
+        }
+    }
+
     public void SolvePuzzle(string input)
     {
+        inputField.text = "";
         if (input.ToUpper() == correctAnswer.ToUpper())
         {
             Debug.Log("Car Puzzle Solved!");
@@ -80,14 +78,5 @@ public class CarPuzzle : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f); // Wait for half a second
         isInteracting = true; // Enable interaction again
-    }
-
-    void ExitPuzzle()
-    {
-        // Logic to exit the puzzle area
-        // This could involve disabling the puzzle canvas and enabling the prompt canvas
-        PuzzleCanvas.enabled = false;
-        EPromptCanvas.enabled = true;
-        Debug.Log("Exiting puzzle");
     }
 }

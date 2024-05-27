@@ -1,19 +1,22 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-
 public class DeskPuzzleInteraction : MonoBehaviour
 {
-
     public Canvas EPromptCanvas;
     public Canvas PuzzleCanvas;
     public TMP_InputField inputField;
     public TMP_Text statusText;
     public string correctCode = "123456";
     private bool isInteracting = true;
+    public Button submitButton; // Add this line
+
+    void Start()
+    {
+        submitButton.onClick.AddListener(OnSubmitButtonClicked); // Hook up the button click event
+    }
 
     void Update()
     {
@@ -24,8 +27,7 @@ public class DeskPuzzleInteraction : MonoBehaviour
             {
                 PuzzleCanvas.enabled = true;
                 EPromptCanvas.enabled = false;
-                Debug.Log("Attempting to solve puzzle");
-                CheckAnswer(inputField.text);
+                Debug.Log("PuzzleCanvas enabled, EPromptCanvas disabled.");
             }
             else // If the puzzle is enabled, assume the player wants to exit
             {
@@ -55,6 +57,15 @@ public class DeskPuzzleInteraction : MonoBehaviour
             // Optionally, reset the input field and status text
             inputField.text = "";
             statusText.text = "";
+            Debug.Log("PuzzleCanvas disabled, EPromptCanvas enabled.");
+        }
+    }
+
+    public void OnSubmitButtonClicked() // Add this method
+    {
+        if (isInteracting && PuzzleCanvas.enabled)
+        {
+            CheckAnswer(inputField.text);
         }
     }
 
@@ -70,24 +81,30 @@ public class DeskPuzzleInteraction : MonoBehaviour
             Debug.Log("Puzzle solved, player can exit");
             // Force Mesh Update to apply the color change immediately
             statusText.ForceMeshUpdate();
-            // Wait for player to press E to exit
-            StartCoroutine(WaitAndExit());
+            // Hide the status text after 3 seconds and disable the PuzzleCanvas if correct
+            StartCoroutine(HideStatusText(true));
         }
         else
         {
             Debug.Log("Incorrect Code.");
             statusText.text = "Try Again. Incorrect Code."; // Display "Try Again. Incorrect Code." if the answer is incorrect
             statusText.color = Color.red; // Change the text color to red for incorrect answers
-                                          // Force Mesh Update to apply the color change immediately
+            // Force Mesh Update to apply the color change immediately
             statusText.ForceMeshUpdate();
+            // Hide the status text after 3 seconds
+            StartCoroutine(HideStatusText(false));
         }
     }
 
-
-    IEnumerator WaitAndExit()
+    IEnumerator HideStatusText(bool correct)
     {
-        yield return new WaitForSeconds(0.5f); // Wait for half a second
-        isInteracting = true; // Enable interaction again
+        yield return new WaitForSeconds(3f); // Wait for 3 seconds
+        statusText.text = ""; // Clear the status text
+        if (correct)
+        {
+            PuzzleCanvas.enabled = false; // Disable the PuzzleCanvas if the answer is correct
+            EPromptCanvas.enabled = true; // Enable the EPromptCanvas
+        }
     }
 
     void ExitPuzzle()
@@ -99,3 +116,11 @@ public class DeskPuzzleInteraction : MonoBehaviour
         Debug.Log("Exiting puzzle");
     }
 }
+
+
+
+
+
+
+
+

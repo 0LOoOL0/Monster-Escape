@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -12,6 +11,12 @@ public class TelephonePuzzleInteraction : MonoBehaviour
     public TMP_Text statusText;
     public string correctCode = "379412";
     private bool isInteracting = true;
+    public Button submitButton; // Declare the submit button
+
+    void Start()
+    {
+        submitButton.onClick.AddListener(OnSubmitButtonClicked); // Hook up the button click event
+    }
 
     void Update()
     {
@@ -49,6 +54,17 @@ public class TelephonePuzzleInteraction : MonoBehaviour
             // Optionally, reset the input field and status text
             inputField.text = "";
             statusText.text = "";
+        }
+    }
+
+    public void OnSubmitButtonClicked() // Method to handle button click
+    {
+        if (isInteracting && !PuzzleCanvas.enabled) // Ensure we're not trying to solve the puzzle if it's already active
+        {
+            PuzzleCanvas.enabled = true;
+            EPromptCanvas.enabled = false;
+            Debug.Log("Attempting to solve puzzle");
+            CheckAnswer(inputField.text);
         }
     }
 

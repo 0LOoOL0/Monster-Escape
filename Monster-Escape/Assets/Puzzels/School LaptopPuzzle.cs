@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -12,6 +11,12 @@ public class LaptopPuzzleInteraction : MonoBehaviour
     public TMP_Text statusText;
     public string correctAnswer = "3575";
     private bool isInteracting = true;
+    public Button submitButton; // Declare the submit button
+
+    void Start()
+    {
+        submitButton.onClick.AddListener(OnSubmitButtonClicked); // Hook up the button click event
+    }
 
     void Update()
     {
@@ -52,6 +57,17 @@ public class LaptopPuzzleInteraction : MonoBehaviour
         }
     }
 
+    public void OnSubmitButtonClicked() // Method to handle button click
+    {
+        if (isInteracting && !PuzzleCanvas.enabled) // Ensure we're not trying to solve the puzzle if it's already active
+        {
+            PuzzleCanvas.enabled = true;
+            EPromptCanvas.enabled = false;
+            Debug.Log("Attempting to solve puzzle");
+            CheckAnswer(inputField.text);
+        }
+    }
+
     public void CheckAnswer(string input)
     {
         inputField.text = "";
@@ -60,7 +76,6 @@ public class LaptopPuzzleInteraction : MonoBehaviour
             Debug.Log("Puzzle Solved!");
             statusText.text = "Correct!";
             statusText.color = Color.green;
-            // Puzzle solved, player can exit
             isInteracting = false;
             Debug.Log("Puzzle solved, player can exit");
         }
