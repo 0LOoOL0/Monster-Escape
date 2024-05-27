@@ -10,7 +10,7 @@ public class TelephonePuzzleInteraction : MonoBehaviour
     public Canvas PuzzleCanvas;
     public TMP_InputField inputField;
     public TMP_Text statusText;
-    public string correctCode = "734921";
+    public string correctCode = "379412";
     private bool isInteracting = true;
 
     void Update()

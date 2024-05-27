@@ -16,14 +16,18 @@ public class CarPuzzle : MonoBehaviour
     void Update()
     {
         Debug.Log("Update called");
-        if (isInteracting)
+        if (isInteracting && Input.GetKeyDown(KeyCode.E))
         {
-            if (Input.GetKeyDown(KeyCode.Return))
+            if (!PuzzleCanvas.enabled) // Only attempt to solve the puzzle if the canvas is disabled
             {
                 PuzzleCanvas.enabled = true;
                 EPromptCanvas.enabled = false;
                 Debug.Log("Attempting to solve car puzzle");
-                StartCoroutine(SolvePuzzle());
+                SolvePuzzle(inputField.text);
+            }
+            else // If the puzzle is enabled, assume the player wants to exit
+            {
+                ExitPuzzle();
             }
         }
     }
@@ -52,16 +56,17 @@ public class CarPuzzle : MonoBehaviour
         }
     }
 
-    IEnumerator SolvePuzzle()
+    public void SolvePuzzle(string input)
     {
-        yield return new WaitForSeconds(1f); // Wait for a second to simulate the puzzle-solving process
-        if (inputField.text.ToUpper() == correctAnswer.ToUpper())
+        if (input.ToUpper() == correctAnswer.ToUpper())
         {
             Debug.Log("Car Puzzle Solved!");
             statusText.text = "Car Puzzle Solved"; // Inform the player
             statusText.color = Color.green; // Change color to green for success
             isInteracting = false; // Set flag to false once the correct answer is entered
             Debug.Log("Puzzle solved, player can exit");
+            // Wait for player to press E to exit
+            StartCoroutine(WaitAndExit());
         }
         else
         {
@@ -69,5 +74,20 @@ public class CarPuzzle : MonoBehaviour
             statusText.text = "Try Again. Incorrect Answer."; // Show error message or hint
             statusText.color = Color.red; // Change color to red for incorrect answers
         }
+    }
+
+    IEnumerator WaitAndExit()
+    {
+        yield return new WaitForSeconds(0.5f); // Wait for half a second
+        isInteracting = true; // Enable interaction again
+    }
+
+    void ExitPuzzle()
+    {
+        // Logic to exit the puzzle area
+        // This could involve disabling the puzzle canvas and enabling the prompt canvas
+        PuzzleCanvas.enabled = false;
+        EPromptCanvas.enabled = true;
+        Debug.Log("Exiting puzzle");
     }
 }

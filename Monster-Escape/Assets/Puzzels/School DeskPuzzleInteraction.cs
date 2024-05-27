@@ -4,8 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+
 public class DeskPuzzleInteraction : MonoBehaviour
 {
+
     public Canvas EPromptCanvas;
     public Canvas PuzzleCanvas;
     public TMP_InputField inputField;
@@ -58,27 +60,29 @@ public class DeskPuzzleInteraction : MonoBehaviour
 
     public void CheckAnswer(string input)
     {
-        inputField.text = "";
+        inputField.text = ""; // Clear the input field after checking the answer
         if (input == correctCode)
         {
             Debug.Log("Desk Unlocked!");
-            statusText.text = "Correct Code"; // Display success message
-            statusText.color = Color.green; // Change color to green for success
-            // Puzzle solved, player can exit
+            statusText.text = "Correct Code"; // Display "Correct Code!" if the answer is correct
+            statusText.color = Color.green; // Change the text color to green for correct answers
             isInteracting = false; // Prevents immediate re-entry
             Debug.Log("Puzzle solved, player can exit");
+            // Force Mesh Update to apply the color change immediately
+            statusText.ForceMeshUpdate();
             // Wait for player to press E to exit
             StartCoroutine(WaitAndExit());
         }
         else
         {
             Debug.Log("Incorrect Code.");
-            statusText.text = "Try Again. Incorrect Code."; // Display failure message
-            statusText.color = Color.red; // Change color to red for failure
-            // Keep the puzzle active, allow player to try again or exit
-            isInteracting = true; // Ensure interaction remains possible
+            statusText.text = "Try Again. Incorrect Code."; // Display "Try Again. Incorrect Code." if the answer is incorrect
+            statusText.color = Color.red; // Change the text color to red for incorrect answers
+                                          // Force Mesh Update to apply the color change immediately
+            statusText.ForceMeshUpdate();
         }
     }
+
 
     IEnumerator WaitAndExit()
     {
