@@ -6,39 +6,72 @@ using TMPro;
 public class CarPuzzle : MonoBehaviour
 {
     public Canvas EPromptCanvas;
-    public Canvas PuzzleCanvas;
-    public TMP_InputField inputField;
-    public TMP_Text statusText;
-    public string correctAnswer = "YOU CAN'T RUN USING THIS CAR";
-    private bool isInteracting = true;
-    public Button submitButton; // Declare the submit button
+    public Canvas CarCanvas; // Changed DeskCanvas to CarCanvas
+    public TMP_InputField CarInputField; // Changed DeskInputField to CarInputField
+    public TMP_Text CarStatusText; // Changed DeskStatusText to CarStatusText
+    public Button CarButton; // Changed DeskButton to CarButton
 
-    void Start()
+    public string correctAnswer = "YOU CAN'T RUN USING THIS CAR";
+    private bool isInteracting = false;
+
+    private void Start()
     {
-        // Initialize the button click listener outside of the trigger zones to avoid unnecessary checks
-        submitButton.onClick.AddListener(OnSubmitButtonClicked);
+        // Hook up the button click event
+        CarButton.onClick.AddListener(OnCarSubmitButtonClicked);
     }
 
-    void Update()
+    public void StartInteraction()
     {
-        Debug.Log("Update called");
-        if (isInteracting)
+        isInteracting = true;
+        EPromptCanvas.enabled = false;
+        CarCanvas.enabled = true; // Changed DeskCanvas to CarCanvas
+        CarInputField.text = ""; // Changed DeskInputField to CarInputField
+        CarInputField.Select(); // Changed DeskInputField to CarInputField
+        CarInputField.ActivateInputField(); // Changed DeskInputField to CarInputField
+    }
+
+    public void EndInteraction()
+    {
+        isInteracting = false;
+        EPromptCanvas.enabled = true;
+        CarCanvas.enabled = false; // Changed DeskCanvas to CarCanvas
+        CarInputField.text = ""; // Changed DeskInputField to CarInputField
+    }
+
+    public void SubmitAnswer()
+    {
+        string input = CarInputField.text; // Changed DeskInputField to CarInputField
+        if (input.ToUpper() == correctAnswer.ToUpper() && input != "")
         {
-            if (Input.GetKeyDown(KeyCode.Return)) // Keep the key press handling for exiting the puzzle
-            {
-                ExitPuzzle();
-            }
+            Debug.Log("Car Puzzle Solved!");
+            CarStatusText.text = "Car Puzzle Solved"; // Changed DeskStatusText to CarStatusText
+            CarStatusText.color = Color.green; // Changed DeskStatusText to CarStatusText
+            StartCoroutine(ExitPuzzle());
         }
+        else
+        {
+            Debug.Log("Incorrect Answer.");
+            CarStatusText.text = input != "" ? "Try Again. Incorrect Answer." : ""; // Changed DeskStatusText to CarStatusText
+            CarStatusText.color = Color.red; // Changed DeskStatusText to CarStatusText
+        }
+    }
+
+    private IEnumerator ExitPuzzle()
+    {
+        yield return new WaitForSeconds(2f); // Wait for a moment before exiting
+        EndInteraction();
+    }
+
+    private void OnCarSubmitButtonClicked()
+    {
+        SubmitAnswer();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            isInteracting = true;
-            Debug.Log("Player entered trigger zone");
-            // Dynamically add the button click listener when entering the trigger zone
-            submitButton.onClick.AddListener(OnSubmitButtonClicked);
+            StartInteraction();
         }
     }
 
@@ -46,63 +79,7 @@ public class CarPuzzle : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            isInteracting = false;
-            Debug.Log("Player exited trigger zone");
-            // Reset the puzzle state here
-            PuzzleCanvas.enabled = false;
-            EPromptCanvas.enabled = true;
-            // Optionally, reset the input field and status text
-            inputField.text = "";
-            statusText.text = "";
-            // Dynamically remove the button click listener when exiting the trigger zone
-            submitButton.onClick.RemoveListener(OnSubmitButtonClicked);
+            EndInteraction();
         }
-    }
-
-    public void OnSubmitButtonClicked() // Method to handle button click
-    {
-        if (isInteracting && !PuzzleCanvas.enabled) // Ensure we're not trying to solve the puzzle if it's already active
-        {
-            PuzzleCanvas.enabled = true;
-            EPromptCanvas.enabled = false;
-            Debug.Log("Attempting to solve car puzzle");
-            SolvePuzzle(inputField.text);
-        }
-    }
-
-    public void SolvePuzzle(string input)
-    {
-        inputField.text = "";
-        if (input.ToUpper() == correctAnswer.ToUpper())
-        {
-            Debug.Log("Car Puzzle Solved!");
-            statusText.text = "Car Puzzle Solved"; // Inform the player
-            statusText.color = Color.green; // Change color to green for success
-            isInteracting = false; // Set flag to false once the correct answer is entered
-            Debug.Log("Puzzle solved, player can exit");
-            // Wait for player to press E to exit
-            StartCoroutine(WaitAndExit());
-        }
-        else
-        {
-            Debug.Log("Incorrect Answer.");
-            statusText.text = "Try Again. Incorrect Answer."; // Show error message or hint
-            statusText.color = Color.red; // Change color to red for incorrect answers
-        }
-    }
-
-    IEnumerator WaitAndExit()
-    {
-        yield return new WaitForSeconds(0.5f); // Wait for half a second
-        isInteracting = true; // Enable interaction again
-    }
-
-    void ExitPuzzle()
-    {
-        // Logic to exit the puzzle area
-        // This could involve disabling the puzzle canvas and enabling the prompt canvas
-        PuzzleCanvas.enabled = false;
-        EPromptCanvas.enabled = true;
-        Debug.Log("Exiting puzzle");
     }
 }

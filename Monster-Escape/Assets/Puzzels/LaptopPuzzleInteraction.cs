@@ -75,7 +75,7 @@ public class LaptopPuzzleInteraction : MonoBehaviour
         }
     }
 
-    private void OnExitTrigger(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
