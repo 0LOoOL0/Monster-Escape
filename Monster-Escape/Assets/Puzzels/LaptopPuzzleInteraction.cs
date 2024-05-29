@@ -2,84 +2,98 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class LaptopPuzzleInteraction : MonoBehaviour
 {
     public Canvas EPromptCanvas;
-    public Canvas LaptopCanvas; // Changed PuzzleCanvas to LaptopCanvas
-    public TMP_InputField LaptopInputField; // Changed inputField to LaptopInputField
-    public TMP_Text LaptopStatusText; // Changed statusText to LaptopStatusText
-    public Button LaptopButton; // Changed submitButton to LaptopButton
+    public Canvas LaptopCanvas;
+    public TMP_InputField LaptopInputField;
+    public TMP_Text LaptopStatusText;
+    public Button LaptopButton;
 
-    private string correctCode = "3575"; // Unique correct code for the laptop puzzle
+    public string correctCode;
     private bool isInteracting = false;
+    private bool puzzleSolved = false; // Flag to prevent multiple submissions
 
     private void Start()
     {
         // Hook up the button click event
-        LaptopButton.onClick.AddListener(OnSubmitButtonClicked);
+        LaptopButton.onClick.AddListener(OnLaptopSubmitButtonClicked);
     }
 
-    public void StartInteraction()
+    public void StartLaptopInteraction()
     {
-        isInteracting = true;
-        EPromptCanvas.enabled = false;
-        LaptopCanvas.enabled = true; // Changed PuzzleCanvas to LaptopCanvas
-        LaptopInputField.text = ""; // Changed inputField to LaptopInputField
-        LaptopInputField.Select(); // Changed inputField to LaptopInputField
-        LaptopInputField.ActivateInputField(); // Changed inputField to LaptopInputField
+        if (!puzzleSolved) // Only start interaction if the puzzle isn't solved
+        {
+            isInteracting = true;
+            EPromptCanvas.enabled = false;
+            LaptopCanvas.enabled = true;
+            LaptopInputField.text = "";
+            LaptopInputField.Select();
+            LaptopInputField.ActivateInputField();
+        }
     }
 
-    public void EndInteraction()
+    public void EndLaptopInteraction()
     {
         isInteracting = false;
         EPromptCanvas.enabled = true;
-        LaptopCanvas.enabled = false; // Changed PuzzleCanvas to LaptopCanvas
-        LaptopInputField.text = ""; // Changed inputField to LaptopInputField
+        LaptopCanvas.enabled = false;
+        LaptopInputField.text = "";
     }
 
-    public void SubmitAnswer()
+    public void SubmitLaptopAnswer()
     {
-        string input = LaptopInputField.text; // Changed inputField to LaptopInputField
-        if (input == correctCode && input != "")
+        if (!puzzleSolved) // Only check the answer if the puzzle isn't solved
         {
-            Debug.Log("Laptop Unlocked!");
-            LaptopStatusText.text = "Correct Code!"; // Changed statusText to LaptopStatusText
-            LaptopStatusText.color = Color.green; // Changed statusText to LaptopStatusText
-            StartCoroutine(ExitPuzzle());
-        }
-        else
-        {
-            Debug.Log("Incorrect Code.");
-            LaptopStatusText.text = input != "" ? "Try Again. Incorrect Code." : ""; // Changed statusText to LaptopStatusText
-            LaptopStatusText.color = Color.red; // Changed statusText to LaptopStatusText
+            string input = LaptopInputField.text.Trim(); // Trim any extra spaces
+            Debug.Log("Input: " + input); // Debug log for input
+            Debug.Log("Correct Code: " + correctCode); // Debug log for correct code
+
+            if (input.Equals(correctCode, System.StringComparison.OrdinalIgnoreCase) && input != "")
+            {
+                Debug.Log("Laptop Unlocked!");
+                LaptopStatusText.text = "Correct Code!";
+                LaptopStatusText.color = Color.green;
+                puzzleSolved = true; // Mark the puzzle as solved
+                PuzzleManager.Instance.isLaptopPuzzleSolved = true;
+                PuzzleManager.Instance.CheckPuzzlesSolved();
+                StartCoroutine(ExitLaptopPuzzle());
+            }
+            else
+            {
+                Debug.Log("Incorrect Code.");
+                LaptopStatusText.text = input != "" ? "Try Again. Incorrect Code." : "";
+                LaptopStatusText.color = Color.red;
+            }
         }
     }
 
-    private IEnumerator ExitPuzzle()
+    private IEnumerator ExitLaptopPuzzle()
     {
         yield return new WaitForSeconds(2f); // Wait for a moment before exiting
-        EndInteraction();
+        EndLaptopInteraction();
     }
 
-    private void OnSubmitButtonClicked()
+    private void OnLaptopSubmitButtonClicked()
     {
-        SubmitAnswer();
+        SubmitLaptopAnswer();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            StartInteraction();
+            StartLaptopInteraction();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !puzzleSolved)
         {
-            EndInteraction();
+            EndLaptopInteraction();
         }
     }
 }

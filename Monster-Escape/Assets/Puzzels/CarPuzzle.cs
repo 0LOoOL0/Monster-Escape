@@ -6,70 +6,23 @@ using TMPro;
 public class CarPuzzle : MonoBehaviour
 {
     public Canvas EPromptCanvas;
-    public Canvas CarCanvas; // Changed DeskCanvas to CarCanvas
-    public TMP_InputField CarInputField; // Changed DeskInputField to CarInputField
-    public TMP_Text CarStatusText; // Changed DeskStatusText to CarStatusText
-    public Button CarButton; // Changed DeskButton to CarButton
-
-    public string correctAnswer = "YOU CAN'T RUN USING THIS CAR";
+    public Canvas CarCanvas;
+    public TMP_InputField CarInputField;
+    public TMP_Text CarStatusText;
+    public Button CarButton;
+    public string correctAnswer;
     private bool isInteracting = false;
+    private bool puzzleSolved = false; // Flag to prevent multiple submissions
 
     private void Start()
     {
-        // Hook up the button click event
         CarButton.onClick.AddListener(OnCarSubmitButtonClicked);
-    }
-
-    public void StartInteraction()
-    {
-        isInteracting = true;
-        EPromptCanvas.enabled = false;
-        CarCanvas.enabled = true; // Changed DeskCanvas to CarCanvas
-        CarInputField.text = ""; // Changed DeskInputField to CarInputField
-        CarInputField.Select(); // Changed DeskInputField to CarInputField
-        CarInputField.ActivateInputField(); // Changed DeskInputField to CarInputField
-    }
-
-    public void EndInteraction()
-    {
-        isInteracting = false;
-        EPromptCanvas.enabled = true;
-        CarCanvas.enabled = false; // Changed DeskCanvas to CarCanvas
-        CarInputField.text = ""; // Changed DeskInputField to CarInputField
-    }
-
-    public void SubmitAnswer()
-    {
-        string input = CarInputField.text; // Changed DeskInputField to CarInputField
-        if (input.ToUpper() == correctAnswer.ToUpper() && input != "")
-        {
-            Debug.Log("Car Puzzle Solved!");
-            CarStatusText.text = "Car Puzzle Solved"; // Changed DeskStatusText to CarStatusText
-            CarStatusText.color = Color.green; // Changed DeskStatusText to CarStatusText
-            StartCoroutine(ExitPuzzle());
-        }
-        else
-        {
-            Debug.Log("Incorrect Answer.");
-            CarStatusText.text = input != "" ? "Try Again. Incorrect Answer." : ""; // Changed DeskStatusText to CarStatusText
-            CarStatusText.color = Color.red; // Changed DeskStatusText to CarStatusText
-        }
-    }
-
-    private IEnumerator ExitPuzzle()
-    {
-        yield return new WaitForSeconds(2f); // Wait for a moment before exiting
-        EndInteraction();
-    }
-
-    private void OnCarSubmitButtonClicked()
-    {
-        SubmitAnswer();
+        CarCanvas.enabled = false; // Make sure the CarCanvas is initially disabled
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !puzzleSolved)
         {
             StartInteraction();
         }
@@ -77,9 +30,57 @@ public class CarPuzzle : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !puzzleSolved)
         {
             EndInteraction();
         }
+    }
+
+    private void StartInteraction()
+    {
+        isInteracting = true;
+        EPromptCanvas.enabled = false;
+        CarCanvas.enabled = true;
+        CarInputField.text = "";
+        CarInputField.Select();
+        CarInputField.ActivateInputField();
+    }
+
+    private void EndInteraction()
+    {
+        isInteracting = false;
+        EPromptCanvas.enabled = true;
+        CarCanvas.enabled = false;
+        CarInputField.text = "";
+    }
+
+    private void OnCarSubmitButtonClicked()
+    {
+        SubmitAnswer();
+    }
+
+    private void SubmitAnswer()
+    {
+        string input = CarInputField.text.Trim(); // Trim any extra spaces
+        if (input.Equals(correctAnswer, System.StringComparison.OrdinalIgnoreCase) && input != "")
+        {
+            CarStatusText.text = "Car Puzzle Solved";
+            CarStatusText.color = Color.green;
+            puzzleSolved = true; // Mark the puzzle as solved
+            HomePuzzleManager.Instance.isCarPuzzleSolved = true;
+            HomePuzzleManager.Instance.CheckPuzzlesSolved();
+            StartCoroutine(ExitPuzzle());
+        }
+        else
+        {
+            CarStatusText.text = input != "" ? "Try Again. Incorrect Answer." : "";
+            CarStatusText.color = Color.red;
+        }
+    }
+
+    private IEnumerator ExitPuzzle()
+    {
+        yield return new WaitForSeconds(2f);
+        EndInteraction();
     }
 }

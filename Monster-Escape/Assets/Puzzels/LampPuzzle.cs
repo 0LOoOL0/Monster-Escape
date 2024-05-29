@@ -6,21 +6,22 @@ using TMPro;
 public class LampPuzzle : MonoBehaviour
 {
     public Canvas EPromptCanvas;
-    public Canvas LampCanvas; // Changed CarCanvas to LampCanvas
-    public TMP_InputField LampInputField; // Changed CarInputField to LampInputField
-    public TMP_Text LampStatusText; // Changed CarStatusText to LampStatusText
-    public Button LampButton; // Changed CarButton to LampButton
-
-    public string correctCombination = "1234";
+    public Canvas LampCanvas;
+    public TMP_InputField LampInputField;
+    public TMP_Text LampStatusText;
+    public Button LampButton;
+    public string correctCombination;
+    private bool puzzleSolved = false; // Flag to prevent multiple submissions
 
     private void Start()
     {
         LampButton.onClick.AddListener(OnLampSubmitButtonClicked);
+        LampCanvas.enabled = false; // Make sure the LampCanvas is initially disabled
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !puzzleSolved)
         {
             StartInteraction();
         }
@@ -28,7 +29,7 @@ public class LampPuzzle : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !puzzleSolved)
         {
             EndInteraction();
         }
@@ -57,18 +58,25 @@ public class LampPuzzle : MonoBehaviour
 
     private void ValidateCombination(string input)
     {
-        if (input == correctCombination)
+        if (input.Equals(correctCombination, System.StringComparison.OrdinalIgnoreCase) && input != "")
         {
-            Debug.Log("Lamp Open");
             LampStatusText.text = "Correct Combination!";
             LampStatusText.color = Color.green;
-            Debug.Log("Puzzle solved, player can exit");
+            puzzleSolved = true; // Mark the puzzle as solved
+            HomePuzzleManager.Instance.isLampPuzzleSolved = true;
+            HomePuzzleManager.Instance.CheckPuzzlesSolved();
+            StartCoroutine(ExitPuzzle());
         }
         else
         {
-            Debug.Log("Incorrect Combination.");
-            LampStatusText.text = "Try again.";
+            LampStatusText.text = "Try Again. Incorrect Combination.";
             LampStatusText.color = Color.red;
         }
+    }
+
+    private IEnumerator ExitPuzzle()
+    {
+        yield return new WaitForSeconds(2f);
+        EndInteraction();
     }
 }
