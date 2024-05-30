@@ -9,7 +9,7 @@ public class Timer : MonoBehaviour
     public TMP_Text displayText; // Single text component for both time and lives
     private float minutes, seconds;
     private static int lives = 3; // Static variable for lives
-    private float timerDuration = 15f; // Timer duration in seconds (5 minutes)
+    private float timerDuration = 120f; // Timer duration in seconds (5 minutes)
 
     void Start()
     {
