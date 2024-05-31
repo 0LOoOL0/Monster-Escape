@@ -141,7 +141,7 @@ public class BedPuzzle : MonoBehaviour
 
     private void LoadNextScene()
     {
-        SceneManager.LoadScene("School"); // Replace "SchoolScene" with the name of your school scene
+        SceneManager.LoadScene("ScreenSchool"); // Go to the next scene
     }
 
     private void OnBedSubmitButtonClicked()
