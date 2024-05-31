@@ -1,30 +1,30 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.SceneManagement;  // Add this for scene management
+using UnityEngine.SceneManagement;
 
 public class Enemy_AI : MonoBehaviour
 {
     private NavMeshAgent agent;
     public GameObject target;
     private AudioSource audioSource; // Private AudioSource
-    public int playerLives = 3;      // Add this to track player lives
 
     // Use this for initialization
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         audioSource = GetComponent<AudioSource>();
-        StartCoroutine(StartFollowingAfterDelay(10f));
+    }
+
+    public void StartFollowing()
+    {
+        StartCoroutine(StartFollowingAfterDelay(0f)); // Immediately start following
     }
 
     IEnumerator StartFollowingAfterDelay(float delay)
     {
-        Debug.LogError("Coroutine started");
         yield return new WaitForSeconds(delay);
         agent.destination = target.transform.position;
-        Debug.LogError("Following started");
         PlayFollowSound();
     }
 
@@ -34,23 +34,20 @@ public class Enemy_AI : MonoBehaviour
         if (audioSource != null)
         {
             audioSource.Play();
-            Debug.LogError("Audio played");
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Enemy triggered with player");
+            ReduceLife();
         }
     }
 
     public void ReduceLife()
     {
-        playerLives--;
-        Debug.Log("Player lives reduced: " + playerLives); // Add this debug statement
-        //if (playerLives <= 0)
-        //{
-        //    GoToMainMenu();
-        //}
+        Timer.DecreaseLives(); // Call a method on the Timer script to decrease lives
     }
-
-    //void GoToMainMenu()
-    //{
-    //    Debug.Log("Going to Main Menu"); // Add this debug statement
-    //    SceneManager.LoadScene("Main Menu");  // Make sure the MainMenu scene is added in the build settings
-    //}
 }

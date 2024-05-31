@@ -24,12 +24,12 @@ public class HomePuzzleManager : MonoBehaviour
     {
         if (isCarPuzzleSolved && isLampPuzzleSolved)
         {
-            LoadMainMenu();
+            LoadSreenWin();
         }
     }
 
-    private void LoadMainMenu()
+    private void LoadSreenWin()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Main Menu");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("ScreenWin");
     }
 }

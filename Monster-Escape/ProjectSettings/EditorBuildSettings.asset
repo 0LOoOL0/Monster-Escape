@@ -12,12 +12,21 @@ EditorBuildSettings:
     path: Assets/Scene Project/Hospital.unity
     guid: d31d367ab64fcf9bba84b271b7cb2d9a
   - enabled: 1
+    path: Assets/Scene Project/ScreenLose.unity
+    guid: 3a4e1187028e1d246944a9b9b1b87252
+  - enabled: 1
     path: Assets/Scene Project/ScreenSchool.unity
     guid: 49700ae8133fc9a4aa0511e4b3ce7466
   - enabled: 1
     path: Assets/Scene Project/School.unity
     guid: 55d59c86b3b00b840bb62bf8813dc1d3
   - enabled: 1
+    path: Assets/Scene Project/ScreenHome.unity
+    guid: df0cf9ccb56c412478e2e38e6b9bd46c
+  - enabled: 1
     path: Assets/Scene Project/Home.unity
     guid: c0d944ca9defd20449bc336e50d75a08
+  - enabled: 1
+    path: Assets/Scene Project/ScreenWin.unity
+    guid: bf3fd12641658f54184e82d9913d2797
   m_configObjects: {}

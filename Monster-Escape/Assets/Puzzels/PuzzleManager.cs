@@ -32,6 +32,6 @@ public class PuzzleManager : MonoBehaviour
 
     private void LoadHomeScene()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Home");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("ScreenHome");
     }
 }
