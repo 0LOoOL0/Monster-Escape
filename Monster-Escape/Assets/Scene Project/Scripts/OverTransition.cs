@@ -12,7 +12,7 @@ public class OverTransition : MonoBehaviour
 
     private IEnumerator TransitionToMenu()
     {
-        yield return new WaitForSeconds(3f); // Wait for 3 seconds
+        yield return new WaitForSeconds(6f); // Wait for 3 seconds
         SceneManager.LoadScene("Main Menu"); // Load the "" scene
     }
 }

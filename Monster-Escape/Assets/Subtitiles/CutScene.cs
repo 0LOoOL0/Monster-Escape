@@ -37,14 +37,14 @@ public class CutScene: MonoBehaviour
         
         yield return StartCoroutine(ShowSubtitle(khalidSubtitle, "I guess... everyone... Died then...", 6f));
 
-        yield return StartCoroutine(ShowSubtitle(uncleSubtitle, "I don't want to admit it.... but I am afraid so….. I searched for days but I could'nt find anyone", 6f));
+        yield return StartCoroutine(ShowSubtitle(uncleSubtitle, "I don't want to admit it.... but I am afraid so….. I searched for days but I couldn't find anyone", 6f));
 
 
         // Show fifth subtitle
         yield return StartCoroutine(ShowSubtitle(khalidSubtitle, ".... So that's it? Are we just going to... die?", 4f));
 
         // Show sixth subtitle
-        yield return StartCoroutine(ShowSubtitle(uncleSubtitle, "No.... We can't let this happen. I almost lost all hope because everyone is gone.... But now.... You're here.... My brother's kid. We can still survive this.", 9f));
+        yield return StartCoroutine(ShowSubtitle(uncleSubtitle, "No.... We can't let this happen. I almost lost all hope because everyone is gone.... But now.... You're here.... My Nephew. We can still survive this.", 9f));
         
         yield return StartCoroutine(ShowSubtitle(khalidSubtitle, "Uncle...", 2f));
 
