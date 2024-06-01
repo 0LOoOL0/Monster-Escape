@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class HomeLevelSubtitleController : MonoBehaviour
@@ -17,22 +16,22 @@ public class HomeLevelSubtitleController : MonoBehaviour
     private void Start()
     {
         // Starting coroutines immediately
-        StartCoroutine(ShowSubtitle(findDadSubtitle, "I must find dad", 5f));
-        StartCoroutine(ShowSubtitle(hurrySubtitle, "I must hurry before it's too late", 10f));
-        StartCoroutine(ShowSubtitle(findKeySubtitle, "Find a key", 15f));
-        StartCoroutine(ShowSubtitle(puzzleSubtitle, "Solve the first puzzle", 20f));
-        StartCoroutine(ShowSubtitle(escapeMonsterSubtitle, "Escape from the monster", 25f));
-        StartCoroutine(ShowSubtitle(rescueDadSubtitle, "Rescue dad from the home", 30f));
-        StartCoroutine(ShowSubtitle(runFromCitySubtitle, "Run from the city before they catch us", 35f));
+        StartCoroutine(ShowSubtitle(findDadSubtitle, "I must find dad", 5f, 0f));
+        StartCoroutine(ShowSubtitle(hurrySubtitle, "I must hurry before it's too late", 5f, 6f));
+        StartCoroutine(ShowSubtitle(findKeySubtitle, "I should solve two puzzles", 5f, 12f));
+        StartCoroutine(ShowSubtitle(puzzleSubtitle, "Solve the first puzzle", 5f, 18f));
+        StartCoroutine(ShowSubtitle(escapeMonsterSubtitle, "Hurry, before the monster comes", 5f, 24f));
+        StartCoroutine(ShowSubtitle(rescueDadSubtitle, "There are more houses I should check", 5f, 30f));
+        StartCoroutine(ShowSubtitle(runFromCitySubtitle, "", 5f, 36f));
 
         // Starting delayed coroutines
-        StartCoroutine(DelayedSubtitleCoroutine(findDadSubtitle, "Where is everybody?", 40f));
-        StartCoroutine(DelayedSubtitleCoroutine(hurrySubtitle, "Why it's so quiet?", 45f));
-        StartCoroutine(DelayedSubtitleCoroutine(findKeySubtitle, "It's a dream", 50f));
-        StartCoroutine(DelayedSubtitleCoroutine(endSubtitle, "Hello, is anyone there?", 55f));
+        StartCoroutine(DelayedSubtitleCoroutine(findDadSubtitle, "Where is everybody?", 5f, 42f));
+        StartCoroutine(DelayedSubtitleCoroutine(hurrySubtitle, "Why it's so quiet?", 5f, 48f));
+        StartCoroutine(DelayedSubtitleCoroutine(findKeySubtitle, "It's a dream", 5f, 54f));
+        StartCoroutine(DelayedSubtitleCoroutine(endSubtitle, "Hello, is anyone there?", 5f, 60f));
     }
 
-    IEnumerator ShowSubtitle(TextMeshProUGUI subtitleText, string content, float duration)
+    IEnumerator ShowSubtitle(TextMeshProUGUI subtitleText, string content, float duration, float delay)
     {
         if (subtitleText == null)
         {
@@ -40,17 +39,24 @@ public class HomeLevelSubtitleController : MonoBehaviour
             yield break; // Exit the coroutine if subtitleText is null
         }
 
+        yield return new WaitForSeconds(delay);
+
+        Debug.Log("Showing subtitle: " + content);
         subtitleText.gameObject.SetActive(true);
         subtitleText.text = content;
 
         yield return new WaitForSeconds(duration);
 
         subtitleText.gameObject.SetActive(false);
+        Debug.Log("Hiding subtitle: " + content);
+
+        // Adding a short delay to ensure no overlap
+        yield return new WaitForSeconds(1f);
     }
 
-    IEnumerator DelayedSubtitleCoroutine(TextMeshProUGUI subtitleText, string content, float duration)
+    IEnumerator DelayedSubtitleCoroutine(TextMeshProUGUI subtitleText, string content, float duration, float delay)
     {
-        yield return new WaitForSeconds(duration);
-        StartCoroutine(ShowSubtitle(subtitleText, content, duration));
+        yield return new WaitForSeconds(delay);
+        StartCoroutine(ShowSubtitle(subtitleText, content, duration, 0f));
     }
 }
