@@ -37,7 +37,7 @@ public class CutScene: MonoBehaviour
         
         yield return StartCoroutine(ShowSubtitle(khalidSubtitle, "I guess... everyone... Died then...", 6f));
 
-        yield return StartCoroutine(ShowSubtitle(uncleSubtitle, "I don't want to admit it.... but I am afraid so….. I searched for days but I didn’t find anyone", 6f));
+        yield return StartCoroutine(ShowSubtitle(uncleSubtitle, "I don't want to admit it.... but I am afraid so….. I searched for days but I could'nt find anyone", 6f));
 
 
         // Show fifth subtitle
