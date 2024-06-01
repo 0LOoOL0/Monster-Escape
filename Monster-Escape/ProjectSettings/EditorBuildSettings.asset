@@ -27,6 +27,9 @@ EditorBuildSettings:
     path: Assets/Scene Project/Home.unity
     guid: c0d944ca9defd20449bc336e50d75a08
   - enabled: 1
+    path: Assets/Scene Project/CutScene.unity
+    guid: b7547c7d3c6166b42a8fe4fe5c430921
+  - enabled: 1
     path: Assets/Scene Project/ScreenWin.unity
     guid: bf3fd12641658f54184e82d9913d2797
   m_configObjects: {}

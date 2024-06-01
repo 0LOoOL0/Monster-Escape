@@ -24,12 +24,12 @@ public class HomePuzzleManager : MonoBehaviour
     {
         if (isCarPuzzleSolved && isLampPuzzleSolved)
         {
-            LoadSreenWin();
+            LoadCutScene();
         }
     }
 
-    private void LoadSreenWin()
+    private void LoadCutScene()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("ScreenWin");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("CutScene");
     }
 }
