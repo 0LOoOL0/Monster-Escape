@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class MyGame_SubtitleController : MonoBehaviour
@@ -12,25 +11,36 @@ public class MyGame_SubtitleController : MonoBehaviour
 
     private void Start()
     {
-        // Starting coroutines immediately
-        StartCoroutine(ShowSubtitle(findDadSubtitle, "Awakening from a deep sleep, you find yourself alone in a strange place.", 5f));
-        StartCoroutine(ShowSubtitle(hurrySubtitle, "Where am I? Why does everything seem so unfamiliar?", 7f));
-        StartCoroutine(ShowSubtitle(findKeySubtitle, "You must find help. You're not alone in this.", 9f));
-        StartCoroutine(ShowSubtitle(endSubtitle, "Something's not right. There's a presence in the shadows. Stay calm, stay focused.", 11f));
-        StartCoroutine(ShowSubtitle(findDadSubtitle, "To escape, you must solve the first puzzle. Look around for clues.", 13f));
-        StartCoroutine(ShowSubtitle(findKeySubtitle, "Another piece of the puzzle. Keep moving, keep searching.", 15f));
-        StartCoroutine(ShowSubtitle(endSubtitle, "The path to safety is clear. But the monster is getting closer. Hurry!", 17f));
-        StartCoroutine(ShowSubtitle(hurrySubtitle, "With newfound courage, you start to escape. But the monster is relentless.", 19f));
-        StartCoroutine(ShowSubtitle(findDadSubtitle, "One last puzzle stands between you and freedom. Can you solve it?", 21f));
-        StartCoroutine(ShowSubtitle(endSubtitle, "You did it With courage and determination, you've escaped the hospital. Now, you must find a way home.", 23f));
+        // Sequentially show subtitles with adjusted timings
+        StartCoroutine(ShowAllSubtitles());
+    }
 
-        // Starting delayed coroutines
-        StartCoroutine(DelayedSubtitleCoroutine(findDadSubtitle, "Why it's so quiet?", 25f));
-        StartCoroutine(DelayedSubtitleCoroutine(hurrySubtitle, "Hello, is anyone there?", 27f));
-        StartCoroutine(DelayedSubtitleCoroutine(findKeySubtitle, "Where is dad?", 29f));
-        StartCoroutine(DelayedSubtitleCoroutine(endSubtitle, "I must find a way to get out from here", 31f));
-        StartCoroutine(DelayedSubtitleCoroutine(hurrySubtitle, "What's that voice?", 33f));
-        StartCoroutine(DelayedSubtitleCoroutine(endSubtitle, "Is someone here?", 35f));
+    IEnumerator ShowAllSubtitles()
+    {
+        yield return ShowSubtitle(findDadSubtitle, "Awakening from a deep sleep, you find yourself alone in a strange place.", 5f);
+        yield return ShowSubtitle(hurrySubtitle, "Where am I? Why does everything seem so unfamiliar?", 5f);
+        yield return ShowSubtitle(findKeySubtitle, "I must find help!", 5f);
+        yield return ShowSubtitle(endSubtitle, "Something's not right. There's a presence in the shadows. Stay calm, stay focused.", 5f);
+        yield return ShowSubtitle(findDadSubtitle, "To escape, you must find and solve the first puzzle. Look around for clues.", 5f);
+        yield return ShowSubtitle(findKeySubtitle, "Keep moving, keep searching.", 5f);
+        yield return ShowSubtitle(endSubtitle, "The path to safety is clear. But the monster is getting closer. Hurry!", 5f);
+        yield return ShowSubtitle(hurrySubtitle, "With newfound courage, you start to escape. But the monster is relentless.", 5f);
+        yield return ShowSubtitle(findDadSubtitle, "A puzzle stands between me and freedom. Can I solve it?", 5f);
+        yield return ShowSubtitle(endSubtitle, "I will do it with courage and determination, I have to escape the hospital.", 5f);
+
+        // Delayed subtitles
+        yield return new WaitForSeconds(5f);
+        yield return ShowSubtitle(findDadSubtitle, "Why it's so quiet?", 5f);
+        yield return new WaitForSeconds(5f);
+        yield return ShowSubtitle(hurrySubtitle, "Hello, is anyone there?", 5f);
+        yield return new WaitForSeconds(5f);
+        yield return ShowSubtitle(findKeySubtitle, "Where is dad?", 5f);
+        yield return new WaitForSeconds(5f);
+        yield return ShowSubtitle(endSubtitle, "I must find a way to get out from here", 5f);
+        yield return new WaitForSeconds(5f);
+        yield return ShowSubtitle(hurrySubtitle, "What's that voice?", 5f);
+        yield return new WaitForSeconds(5f);
+        yield return ShowSubtitle(endSubtitle, "Is someone here?", 5f);
     }
 
     IEnumerator ShowSubtitle(TextMeshProUGUI subtitleText, string content, float duration)
@@ -38,20 +48,19 @@ public class MyGame_SubtitleController : MonoBehaviour
         if (subtitleText == null)
         {
             Debug.LogError("subtitleText is null. Please check your assignments in the Inspector.");
-            yield break; // Exit the coroutine if subtitleText is null
+            yield break;
         }
 
+        Debug.Log("Showing subtitle: " + content);
         subtitleText.gameObject.SetActive(true);
         subtitleText.text = content;
 
         yield return new WaitForSeconds(duration);
 
         subtitleText.gameObject.SetActive(false);
-    }
+        Debug.Log("Hiding subtitle: " + content);
 
-    IEnumerator DelayedSubtitleCoroutine(TextMeshProUGUI subtitleText, string content, float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        StartCoroutine(ShowSubtitle(subtitleText, content, duration));
+        // Adding a short delay to ensure no overlap
+        yield return new WaitForSeconds(1f);
     }
 }
