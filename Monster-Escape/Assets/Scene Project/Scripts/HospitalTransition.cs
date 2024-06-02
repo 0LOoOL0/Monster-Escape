@@ -12,6 +12,8 @@ public class HospitalTransition : MonoBehaviour
 
     private IEnumerator TransitionToHospital()
     {
+        Timer.SetLives(3);
+
         yield return new WaitForSeconds(3f); // Wait for 3 seconds
         SceneManager.LoadScene("Hospital"); // Load the "Hospital" scene
     }

@@ -11,6 +11,7 @@ public class HomeTransition : MonoBehaviour
 
     private IEnumerator TransitionToHome()
     {
+        Timer.SetLives(3);
         yield return new WaitForSeconds(3f); // Wait for 3 seconds
         SceneManager.LoadScene("Home"); // Load the "School" scene
     }

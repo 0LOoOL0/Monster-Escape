@@ -93,4 +93,10 @@ public class Timer : MonoBehaviour
             SceneManager.LoadScene("ScreenLose"); // Go to main menu if lives are 0 or less
         }
     }
+    public static void SetLives(int l)
+    {
+        lives = l;
+    }
+
+
 }

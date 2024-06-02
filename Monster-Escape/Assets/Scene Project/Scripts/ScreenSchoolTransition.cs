@@ -10,7 +10,9 @@ public class ScreenSchoolTransition : MonoBehaviour
     }
 
     private IEnumerator TransitionToSchool()
+
     {
+        Timer.SetLives(3); 
         yield return new WaitForSeconds(3f); // Wait for 3 seconds
         SceneManager.LoadScene("School"); // Load the "School" scene
     }
